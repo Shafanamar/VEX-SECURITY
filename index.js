@@ -1,6 +1,5 @@
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
-const mongoose = require('mongoose');
 require('dotenv').config();
 const connectDB = require('./database/connect');
 
@@ -9,8 +8,7 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMessageReactions
+        GatewayIntentBits.MessageContent
     ]
 });
 
@@ -41,4 +39,3 @@ for (const file of eventFiles) {
 connectDB();
 
 client.login(process.env.BOT_TOKEN);
-
