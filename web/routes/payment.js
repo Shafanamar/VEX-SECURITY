@@ -1,15 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Stripe = require('stripe');
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+const Subscription = require('../../models/Subscription');
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+// Endpoint to create a checkout session
 router.post('/create-checkout-session', async (req, res) => {
-    const { tier } = req.body;
-
-    let price;
-    if (tier === 'Bronze') price = 500; // $5.00
-    else if (tier === 'Silver') price = 1000; // $10.00
-    else if (tier === 'Gold') price = 2000; // $20.00
+    const { tier, userId, guildId } = req.body;
 
     try {
         const session = await stripe.checkout.sessions.create({
@@ -21,21 +19,26 @@ router.post('/create-checkout-session', async (req, res) => {
                         product_data: {
                             name: `${tier} Subscription`,
                         },
-                        unit_amount: price,
+                        unit_amount: tier === 'Gold' ? 1000 : tier === 'Silver' ? 500 : 250, // Amount in cents
                     },
                     quantity: 1,
                 },
             ],
-            mode: 'subscription',
-            success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+            mode: 'payment',
+            success_url: `http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}&userId=${userId}&guildId=${guildId}&tier=${tier}`,
+            cancel_url: 'http://localhost:3000/cancel',
+            metadata: {
+                userId: userId,
+                guildId: guildId,
+                tier: tier,
+            },
         });
+
         res.json({ id: session.id });
     } catch (error) {
-        console.error('Error creating Stripe session', error);
-        res.status(500).send('Failed to create session');
+        console.error('Error creating checkout session:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
 module.exports = router;
-
