@@ -3,38 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscription Panel</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Add your CSS file here -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Bot Control Panel</title>
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Subscription Panel</h1>
-        <p>Select your subscription tier:</p>
+    <header class="header">
+        <div class="logo">Bot Panel</div>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        <button class="subscription-btn">View Plans</button>
+        <a href="#" class="support-link">Support Server</a>
     </header>
     
-    <main>
-        <section class="subscription-options">
-            <div class="tier bronze">
-                <h2>Bronze Tier</h2>
-                <p>$5/month</p>
-                <a href="/subscribe?tier=bronze" class="subscribe-button">Subscribe</a>
-            </div>
-            <div class="tier silver">
-                <h2>Silver Tier</h2>
-                <p>$10/month</p>
-                <a href="/subscribe?tier=silver" class="subscribe-button">Subscribe</a>
-            </div>
-            <div class="tier gold">
-                <h2>Gold Tier</h2>
-                <p>$20/month</p>
-                <a href="/subscribe?tier=gold" class="subscribe-button">Subscribe</a>
-            </div>
+    <aside class="sidebar">
+        <nav>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#logs">Custom Log Channel</a></li>
+                <li><a href="#welcome">Welcome Message</a></li>
+                <li><a href="#anti-raid">Anti Raid</a></li>
+                <li><a href="#anti-nuke">Anti Nuke</a></li>
+                <li><a href="#bot-status">Bot Status</a></li>
+                <li><a href="#subscriptions">Subscription Plans</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <section id="overview">
+            <h1>Server Overview</h1>
+            <button onclick="loginWithDiscord()">Login with Discord</button>
+        </section>
+        <section id="logs">
+            <h2>Custom Log Channel</h2>
+            <button onclick="toggleFeature('logs')">Toggle Logs</button>
+        </section>
+        <section id="welcome">
+            <h2>Set Welcome Message</h2>
+            <input type="text" id="welcomeMessage" placeholder="Enter welcome message">
+            <button onclick="saveWelcomeMessage()">Save Message</button>
+        </section>
+        <section id="anti-raid">
+            <h2>Anti Raid</h2>
+            <button onclick="toggleFeature('anti-raid')">Toggle Anti Raid</button>
+        </section>
+        <section id="anti-nuke">
+            <h2>Anti Nuke</h2>
+            <button onclick="toggleFeature('anti-nuke')">Toggle Anti Nuke</button>
+        </section>
+        <section id="bot-status">
+            <h2>Bot Status</h2>
+            <canvas id="botStatusChart"></canvas>
+        </section>
+        <section id="subscriptions">
+            <h2>Subscription Plans</h2>
+            <button class="subscription-btn">Subscribe Now</button>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Your Bot Name</p>
-    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
-
